@@ -10,27 +10,27 @@ typedef struct Vector3 {
   float x;
   float y;
   float z;
-}
+};
 
 Vector3 ACC = {
   0, //x
   0, //y
   0  //z
-}
+};
 Vector3 GYRO = {
   0, //x
   0, //y
   0  //z
-}
+};
 Vector3 ANGL = {
   0, //x
   0, //y
   0  //z
-}
+};
 
-void setRegister(uint8_t slaveAddr,uint8_t registAddr,uint8_t registValue) {
+void setRegister(uint8_t slaveAddr, uint8_t registAddr, uint8_t registValue) {
   Wire.beginTransmission(slaveAddr);
-  Wire.write(registerAddr);
+  Wire.write(registAddr);
   Wire.write(registValue);
   Wire.endTransmission();
 }
@@ -45,12 +45,12 @@ void getDigital() {
 
   //デジタル値の取得
   while (Wire.available()) {
-    DIGITAL_DATA[i++] = Wire.read();
+    DIGITAL_8BIT[i++] = Wire.read();
   }
 
   //デジタル値8bitの連結
   for (i = 0; i < (requestDataLen / 2); i++) {
-    DIGITAL_16BIT[i] = (int16_t)(DIGITAL_8BIT[i * 2] << 8  | DIGITAL_8BIT[i * 2 + 1])
+    DIGITAL_16BIT[i] = (int16_t)(DIGITAL_8BIT[i * 2] << 8  | DIGITAL_8BIT[i * 2 + 1]);
   }
 }
 
@@ -72,7 +72,7 @@ void calcANGL() {
 
   timeNow = micros();
 
-  　//回転速度 * 微小時間[s] で積分
+  //回転速度 * 微小時間[s] で積分
   ANGL.x += GYRO.x * timeDelta;
   ANGL.y += GYRO.y * timeDelta;
   ANGL.z += GYRO.z * timeDelta;
@@ -84,21 +84,21 @@ void calcANGL() {
 
 void printlnACC() {
   Serial.print(" ACC[g]:  ");
-  Serial.print(ACC.x[0]);    Serial.print("\t");
-  Serial.print(ACC.y[1]);    Serial.print("\t");
-  Serial.print(ACC.z[2]);    Serial.print("\t");
+  Serial.print(ACC.x);    Serial.print("\t");
+  Serial.print(ACC.y);    Serial.print("\t");
+  Serial.print(ACC.z);    Serial.print("\t");
 }
 void printlnGYRO () {
   Serial.print("GYRO[deg/s]:  ");
-  Serial.print(GYRO.x[4]);    Serial.print("\t");
-  Serial.print(GYRO.y[5]);    Serial.print("\t");
-  Serial.print(GYRO.z[6]);    Serial.print("\t");
+  Serial.print(GYRO.x);    Serial.print("\t");
+  Serial.print(GYRO.y);    Serial.print("\t");
+  Serial.print(GYRO.z);    Serial.print("\t");
 }
 void printlnANGL () {
   Serial.print("GYRO[deg/s]:  ");
-  Serial.print(GYRO.x[4]);    Serial.print("\t");
-  Serial.print(GYRO.y[5]);    Serial.print("\t");
-  Serial.print(GYRO.z[6]);    Serial.print("\t");
+  Serial.print(GYRO.x);    Serial.print("\t");
+  Serial.print(GYRO.y);    Serial.print("\t");
+  Serial.print(GYRO.z);    Serial.print("\t");
 }
 void setup() {
   Serial.begin(115200);
@@ -111,12 +111,12 @@ void setup() {
   //0x1C : 加速度のスケールレンジ設定があるレジスタ
   //0b00000000 : 4,3bitを00に指定することで+-2gまで測れる。gが重力加速度
   setRegister(MPU_6050_ADDR, 0x1C , 0b00000000);
-  
+
   //0x6B : クロック設定があるレジスタ
   //0b00000000 : 2,1,0bitを000に指定することで、20MHz振動に設定
   setRegister(MPU_6050_ADDR, 0x6B , 0b00000000);
-  
-  delay(500);
+
+  delay(1000);
 }
 
 void loop() {
@@ -126,7 +126,7 @@ void loop() {
 
   //printlnACC();
   //printlnGYRO();
-  printlnVNGL();
+  printlnANGL();
   Serial.print("\n");
-  delay(10);
+  delay(100);
 }
