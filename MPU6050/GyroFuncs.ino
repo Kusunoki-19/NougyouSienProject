@@ -44,7 +44,7 @@ void calcGyroDrift () {
     GYRO_DRIFT.x += GYRO.x;
     GYRO_DRIFT.y += GYRO.y;
     GYRO_DRIFT.z += GYRO.z;
-    Serial.print(".");
+    Serial.print("/");
     delay(10);
   }
   Serial.print("\n");
@@ -70,7 +70,6 @@ void calcANGL() {
   ANGL.z += (double)(GYRO.z - GYRO_DRIFT.z) * timeDelta;
 
   timePre = timeNow;
-
 }
 
 void printACC() {
