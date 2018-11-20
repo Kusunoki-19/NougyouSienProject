@@ -1,3 +1,5 @@
+#define MPU_6050_ADDR 0x68
+
 uint8_t DIGITAL_8BIT[14] = {0};
 int16_t DIGITAL_16BIT[7] = {0};
 

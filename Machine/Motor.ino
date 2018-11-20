@@ -1,7 +1,15 @@
-#define MOTOR_R1 1
-#define MOTOR_R2 2
-#define MOTOR_L1 3
-#define MOTOR_L2 4
+#define MOTOR_R_1
+#define MOTOR_R_2
+
+#define MOTOR_L_1
+#define MOTOR_L_2
+
+void MotorSetup(){
+    pinMode(MOTOR_R_1, OUTPUT);
+    pinMode(MOTOR_R_2, OUTPUT);
+    pinMode(MOTOR_L_1, OUTPUT);
+    pinMode(MOTOR_L_2, OUTPUT);
+}
 
 void MachineMove(enum MOVE_WAY way, uint8_t spd) {
   //dir : 移動方向

@@ -1,14 +1,20 @@
 #include <Wire.h>
 #include <math.h>
-#define MPU_6050_ADDR 0x68
+
+typedef struct POS {
+  float x,
+  float y
+};
+
+POS INIT_POS = {0, 0};
+POS MARK_POS = {0, 0};
+POS NOW_POS  = {0, 0};
 
 enum MACHINE_STATE {
   NONACTIVE,
   ACTIVE,
-  FORWARDING,
-  TURNING,
-  TURNING_RIGHT,
-  TURNING_LEFT,
+  GO_TO_MARK_POS,
+  GO_TO_INIT_POS
 } machine_state;
 
 enum MOVE_WAY {
@@ -24,6 +30,9 @@ enum MOVE_WAY {
 void setup() {
   Serial.begin(115200);
   Serial.println("Start");
+  
+  EncoderSetup();
+  MotorSetup();
   MPU6050Setup();
 }
 
@@ -36,18 +45,13 @@ void loop() {
       break;
     case ACTIVE:
       break;
-    case FORWARDING:
+    case GO_TO_MARK_POS:
       break;
-    case TURNING:
-      break;
-    case TURNING_RIGHT:
-      break;
-    case TURNING_LEFT:
+    case GO_TO_INIT_POS:
       break;
     default:
       break;
   }
-
   //printACC();
   //printNoDriftGYRO();
   printANGL();
